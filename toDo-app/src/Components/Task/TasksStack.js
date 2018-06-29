@@ -12,7 +12,7 @@ export default createStackNavigator({
   TaskDetail: {
     screen: TaskDetail,
     navigationOptions: ({ navigation }) => ({
-      title: `${navigation.state.params.name.first.toUpperCase()} ${navigation.state.params.name.last.toUpperCase()}`,
+      title: `${123}`,
     }),
   },
 }, {

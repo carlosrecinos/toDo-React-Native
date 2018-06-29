@@ -1,49 +1,47 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, TouchableHighlight } from 'react-native';
+import { View, FlatList } from 'react-native';
 import { connect } from 'react-redux';
-import { SwipeListView } from 'react-native-swipe-list-view';
 import _ from 'lodash';
+import { Input, Icon } from 'native-base';
+
 import { fetchTasks } from '../../Actions/TaskAction';
 import Task from './Task';
+import styled from 'styled-components';
 
 class Tasks extends Component {
   componentDidMount() {
     this.props.fetchTasks();
   }
-  handleCardPress = (e) => {
-    console.log(e);
-  }
+
   onPress = (e) => {
     this.setState({ g: 'h' });
   }
-  renderItem = ({ item }) => {
-    console.log(item);
-    return (
-      <Task handlePress={this.onPress} />
-    );
+  handleCardPress = () => {
+
   }
-  renderDeleteButton = () => {
-    console.log('object');
-    return (
-      <View />
-    );
-  }
+  renderItem = ({ item }) => (
+    <Task key={item._id} handlePress={this.onPress} item={item} />
+  )
+  renderDeleteButton = () => (
+    <View />
+  )
   render() {
     const { tasks } = this.props;
     return (
       <View>
-        <SwipeListView
-          useFlatList
+        <FlatList
           data={_.values(tasks)}
           renderItem={this.renderItem}
           renderHiddenItem={this.renderDeleteButton}
-          leftOpenValue={75}
-          rightOpenValue={-75}
         />
       </View>
     );
   }
 }
+
+const Item = styled(View)`
+  margin: 10px; auto;
+`;
 
 const mapStateToProps = state => ({
   tasks: state.TasksReducer.tasks,

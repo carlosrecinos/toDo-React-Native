@@ -8,7 +8,6 @@ import TasksStack from './Components/Task/TasksStack';
 import HomeStack from './Components/Home/HomeStack';
 import AuthtenticationStack from './Components/Authentication/AuthtenticationStack';
 import { store } from './store';
-import { SET_CURRENT_USER } from './ActionTypes/AppTypes';
 import { setCurrentUserAction } from './Actions/AppActions';
 import ProfileStack from './Components/Profile.js/ProfileStack';
 
