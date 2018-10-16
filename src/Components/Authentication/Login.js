@@ -11,8 +11,8 @@ const reactLogoUri = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/
 
 class Login extends Component {
   state = {
-    username: 'carlosrecinos1999@gmail.com',
-    password: 'recinos',
+    username: 'emilio@gmail.com',
+    password: 'emilio',
     loading: false,
     error: {},
   }
@@ -24,20 +24,20 @@ class Login extends Component {
     });
 
     this.props.logIn(username, password)
-      .then((response) => {
+      .then(() => {
         this.setState({ loading: false });
         this.props.navigation.navigate('App');
       })
       .catch((error) => {
         this.setState({ loading: false, error });
-        console.log('Error', error);
+        console.warn('Error', error);
       });
   }
 
   inputsAreFilled = () => {
     const { username, password } = this.state;
 
-    return !(username !== '' && password !== '');
+    return !(username && password);
   }
 
   inputs = {}
@@ -53,7 +53,7 @@ class Login extends Component {
       <KeyboardAvoidingView behavior="padding">
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
           <Container>
-            <Title> ToDo App </Title>
+            <Title> Todo App </Title>
             <Logo source={{ uri: reactLogoUri }} />
             <Input
               name="username"
@@ -79,11 +79,11 @@ class Login extends Component {
               {
                 loading
                 ?
-                  <Button block primary disabled onPress={this.onSubmit}>
+                  <Button block light disabled onPress={this.onSubmit}>
                     <Text>Log in</Text>
                   </Button>
                 :
-                  <Button block primary disabled={this.inputsAreFilled()} onPress={this.onSubmit}>
+                  <Button block light disabled={this.inputsAreFilled()} onPress={this.onSubmit}>
                     <Text>Log in</Text>
                   </Button>
               }
@@ -100,7 +100,7 @@ const Container = styled(View)`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #00A5FF;
+  background-color: #DDDDDD;
   height: 100%
 
 `;
@@ -113,9 +113,7 @@ const Logo = styled(Image)`
   height: 100;
 `;
 const Input = styled(TextInput)`
-  border: 1px solid black;
   background-color: white;
-  border-radius: 5px;
   width: 80%;
   height: 50px;
   font-size: 20;

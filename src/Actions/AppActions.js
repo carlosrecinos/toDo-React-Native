@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { AsyncStorage } from 'react-native';
 import { LOG_IN, SET_CURRENT_USER, LOG_OUT } from '../ActionTypes/AppTypes';
 
-const logInAction = payload => ({
+const logInAction = () => ({
   type: LOG_IN,
 });
 
@@ -16,7 +16,7 @@ export const logOutAction = () => ({
   type: LOG_OUT,
 });
 
-export const logIn = (email, password) => async dispatch => new Promise((resolve, reject) => {
+export const logIn = (email, password) => (dispatch, getState) => new Promise((resolve, reject) => {
   axios.post('/login', {
     email,
     pass: password,
@@ -28,8 +28,8 @@ export const logIn = (email, password) => async dispatch => new Promise((resolve
         AsyncStorage.setItem('@MySuperDuperStore:token', response.data.token)
           .then(() => {
             dispatch(logInAction());
+            dispatch(setCurrentUserAction(response.data.usuario));
             axios.defaults.headers.common.Authorization = `Bearer ${response.data.token}`;
-            dispatch(setCurrentUserAction(response.data.data));
             resolve(response.data);
           })
           .catch((error) => {

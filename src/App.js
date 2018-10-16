@@ -1,5 +1,5 @@
 import React from 'react';
-import { createBottomTabNavigator, createStackNavigator, createSwitchNavigator } from 'react-navigation';
+import { createBottomTabNavigator, createSwitchNavigator } from 'react-navigation';
 import { AsyncStorage } from 'react-native';
 import { Icon } from 'native-base';
 import axios from 'axios';
@@ -37,48 +37,44 @@ const AppStack = createBottomTabNavigator({
     },
   },
 });
+
 let initialRouteName = 'Auth';
 
 async function getInitialRoute() {
   let isValid = false;
   try {
-    console.log('ASD');
-    await AsyncStorage.getItem('@MySuperDuperStore:token')
-      .then((token) => {
-        if (token) {
-          console.log('ASD');
-          axios.post('/verificarToken', { token })
-            .then((responseVerifyToken) => {
-              if (responseVerifyToken.data.valido) {
-                initialRouteName = 'App';
-                axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-                console.log(axios.defaults.common);
-                const decoded = decode(token);
-                const user = {
-                  email: decoded.email,
-                  nombre: decoded.nombre,
-                };
-                store.dispatch(setCurrentUserAction(user));
-                isValid = true;
-              } else {
-                AsyncStorage.removeItem('@MySuperDuperStore:token');
-              }
-            })
-            .catch((error) => {
-              console.log('Error', error);
-            });
-        }
-      })
-      .catch((error) => {
-        console.log('ERror', error);
-      });
+    const token = await AsyncStorage.getItem('@MySuperDuperStore:token');
+    if (token) {
+      axios.post('/verificarToken', { token })
+        .then((responseVerifyToken) => {
+          if (responseVerifyToken.data.valido) {
+            axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+            const decoded = decode(token);
+            const user = {
+              email: decoded.email,
+              nombre: decoded.nombre,
+            };
+            store.dispatch(setCurrentUserAction(user));
+            isValid = true;
+          } else {
+            AsyncStorage.removeItem('@MySuperDuperStore:token');
+          }
+        })
+        .catch((error) => {
+          console.log('Error', error);
+        });
+    } else {
+    }
   } catch (error) {
     console.log(error);
   }
   return isValid;
 }
 
-getInitialRoute();
+const isValid = getInitialRoute();
+if (isValid) {
+  initialRouteName = 'Auth';
+}
 export default createSwitchNavigator(
   {
     App: AppStack,

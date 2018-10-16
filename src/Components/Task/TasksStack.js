@@ -12,7 +12,7 @@ export default createStackNavigator({
   TaskDetail: {
     screen: TaskDetail,
     navigationOptions: ({ navigation }) => ({
-      title: `${123}`,
+      title: `${navigation.toString()}`,
     }),
   },
 }, {

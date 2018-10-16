@@ -13,7 +13,7 @@ export const AppReducer = (state = {
     case SET_CURRENT_USER:
       return {
         ...state,
-        currentUser: action.paylaod,
+        currentUser: action.payload,
       };
 
     default:
